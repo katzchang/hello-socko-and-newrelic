@@ -1,8 +1,13 @@
 ThisBuild / scalaVersion := "2.11.12"
 ThisBuild / organization := "com.example"
 
+val currentDirectory = new java.io.File(".").getCanonicalPath
+
 lazy val helloSocko = (project in file("."))
   .settings(
+    fork := true,
+    run / javaOptions += s"-javaagent:${currentDirectory}/newrelic/newrelic.jar",
+
     name := "Hello Socko",
     libraryDependencies += "org.mashupbots.socko" %% "socko-webserver" % "0.6.0",
     libraryDependencies += "com.typesafe.akka" %% "akka-actor" % "2.4.20",
