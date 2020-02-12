@@ -21,6 +21,8 @@ object HelloApp {
       //
       val routes = Routes({
         case GET(request) => {
+          import com.newrelic.api.agent.NewRelic
+          NewRelic.setTransactionName(null, "HelloHandler")
           actorSystem.actorOf(Props[HelloHandler]) ! request
         }
       })
@@ -44,6 +46,8 @@ object HelloApp {
      * Hello processor writes a greeting and stops.
      */
     class HelloHandler extends Actor {
+
+
       def receive = {
         case event: HttpRequestEvent =>
           event.response.write("Hello from Socko (" + new Date().toString + ")")
